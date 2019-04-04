@@ -1,24 +1,36 @@
+using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace ProfileApi.Models
 {
+    [Serializable]    
     public class Profile
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.ObjectId)]// this one makes it possible to keep Id property as string
         public string Id { get; set; }
 
+        [BsonElement("userId")]
+        public int UserId { get; set; }
+
         [BsonElement("age")]
-        public string Age { get; set; }
+        public int Age { get; set; }
 
         [BsonElement("email")]
-        public decimal Email { get; set; }
+        public string Email { get; set; }
 
         [BsonElement("phoneNumber")]
         public string PhoneNumber { get; set; }
 
-        [BsonElement("home")]
+        [BsonElement("home")]// this attribute is to tell mongodb to map Address from home property
+        [JsonProperty(PropertyName = "home")]// this attribute makes sure when you post/put home is mapped to address
         public Address Address { get; set; }
+
+        [BsonElement("kids")]
+        [BsonIgnoreIfNull]
+        public IEnumerable<Person> Kids { get; set; }
     }
 }
