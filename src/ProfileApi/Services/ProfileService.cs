@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ProfileApi.Models;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
+using Microsoft.Extensions.Options;
 
 namespace ProfileApi.Services
 {
@@ -10,10 +10,10 @@ namespace ProfileApi.Services
     {
         private readonly IMongoCollection<Profile> _profiles;
 
-        public ProfileService(IConfiguration config)
+        public ProfileService(IOptions<Settings> options)
         {
-            var client = new MongoClient(config.GetConnectionString("ProfilesDb"));
-            var database = client.GetDatabase("profilesdb");
+            var client = new MongoClient(options.Value.ConnectionString);
+            var database = client.GetDatabase(options.Value.Database);
             _profiles = database.GetCollection<Profile>("profiles");
         }
 

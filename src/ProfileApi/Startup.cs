@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ProfileApi.Models;
 using ProfileApi.Services;
 
 namespace ProfileApi
@@ -28,6 +29,13 @@ namespace ProfileApi
         {
             services.AddScoped<ProfileService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //maps settings from json so that options can be injected wherever required
+            services.Configure<Settings>(options =>
+            {
+                options.ConnectionString = Configuration.GetSection("MongoDb:ConnectionString").Value;
+                options.Database = Configuration.GetSection("MongoDb:Database").Value;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
