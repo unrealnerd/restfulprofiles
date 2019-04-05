@@ -27,7 +27,8 @@ namespace ProfileApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ProfileService>();
+            services.AddScoped<IProfileContext, ProfileContext>();
+            services.AddTransient<IRepository<Profile>, ProfileRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //maps settings from json so that options can be injected wherever required

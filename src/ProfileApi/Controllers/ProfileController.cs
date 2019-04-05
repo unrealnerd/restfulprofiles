@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ProfileApi.Models;
 using ProfileApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ProfileApi.Controllers
 {
@@ -9,23 +10,23 @@ namespace ProfileApi.Controllers
     [ApiController]
     public class ProfilesController : ControllerBase
     {
-        private readonly ProfileService _profileService;
+        private readonly IRepository<Profile> _profileRepository;
 
-        public ProfilesController(ProfileService profileService)
+        public ProfilesController(IRepository<Profile> profileRepository)
         {
-            _profileService = profileService;
+            _profileRepository = profileRepository;
         }
 
         [HttpGet]
-        public ActionResult<List<Profile>> Get()
+        public async Task<ActionResult<List<Profile>>> Get()
         {
-            return _profileService.Get();
+            return await _profileRepository.Get();
         }
 
         [HttpGet("{id:length(24)}", Name = "GetProfile")]
-        public ActionResult<Profile> Get(string id)
+        public async Task<ActionResult<Profile>> Get(string id)
         {
-            var profile = _profileService.Get(id);
+            var profile = await _profileRepository.Get(id);
 
             if (profile == null)
             {
@@ -36,39 +37,39 @@ namespace ProfileApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Profile> Create(Profile profile)
+        public async Task<ActionResult<Profile>> Create(Profile profile)
         {
-            _profileService.Create(profile);
+            await _profileRepository.Create(profile);
 
             return CreatedAtRoute("GetProfile", new { id = profile.Id.ToString() }, profile);
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Profile profileIn)
+        public async Task<IActionResult> Update(string id, Profile profileIn)
         {
-            var profile = _profileService.Get(id);
+            var profile = _profileRepository.Get(id);
 
             if (profile == null)
             {
                 return NotFound();
             }
 
-            _profileService.Update(id, profileIn);
+            await _profileRepository.Update(id, profileIn);
 
             return NoContent();
         }
 
         [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var profile = _profileService.Get(id);
+            var profile = await _profileRepository.Get(id);
 
             if (profile == null)
             {
                 return NotFound();
             }
 
-            _profileService.Remove(profile.Id);
+            await _profileRepository.Remove(profile.Id);
 
             return NoContent();
         }
