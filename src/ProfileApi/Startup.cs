@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using ProfileApi.Middleware;
 using ProfileApi.Models;
 using ProfileApi.Services;
@@ -30,13 +33,39 @@ namespace ProfileApi
         {
             services.AddScoped<IProfileContext, ProfileContext>();
             services.AddTransient<IRepository<Profile>, ProfileRepository>();
+            services.AddScoped<LoginService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            //maps settings from json so that options can be injected wherever required
+            
+            //Maps settings file to Settings Class at runtime
             services.Configure<Settings>(options =>
             {
                 options.ConnectionString = Configuration.GetSection("MongoDb:ConnectionString").Value;
                 options.Database = Configuration.GetSection("MongoDb:Database").Value;
+                options.SecretToken = Configuration.GetSection("JWT:SecretToken")
+                .Value;
+                options.TokenIssuer = Configuration.GetSection("JWT:Issuer").Value;
+            });
+            
+            
+            var appSettingsSection = Configuration.GetSection("Api");
+            
+            var secretToken = Encoding.ASCII.GetBytes(Configuration.GetSection("JWT:SecretToken").Value);
+
+            services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secretToken),
+                    ValidateIssuer = false,// validate the server that generates the token
+                    ValidateAudience = false//validate the user who generates token is auth0rized
+                };
             });
         }
 
@@ -54,7 +83,7 @@ namespace ProfileApi
             }
 
             app.UseMiddleware(typeof(CustomExceptionMiddleware));
-
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

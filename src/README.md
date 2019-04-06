@@ -11,12 +11,13 @@
 * make all async
 * unit test on controller 
 * Create middleware for global exception handling
+* Add security for API- try using JWT instead of cookie
+for generating token use "api/Login" and generate a Token. Then use this token in the request header
 
 # Things to be Done
 * search action implementation
 * seperate API proj and lib proj
 * unit test- Use Autofixture
-* Add security for API- try using JWT instead of cookie
 * Integrate swagger
 * unit test for repository
 * Integrate Logging service
