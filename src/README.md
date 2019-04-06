@@ -20,3 +20,9 @@
 * Integrate swagger
 * unit test for repository
 * Integrate Logging service
+* containerize using docker
+* deploy on heroku or azure
+
+
+### Assumptions
+* made use of new id(string- objectID) instead of simple integer column userId with  for mongodb integration
