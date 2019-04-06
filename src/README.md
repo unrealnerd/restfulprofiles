@@ -1,4 +1,7 @@
 # Things Done
+* basic CRUD apis
+* configure mongodb
+* mongodb integration with the API
 * inject configrations as options
 * upload to git
 * Move all creation of instances to DI
@@ -10,6 +13,7 @@
 * Create middleware for global exception handling
 
 # Things to be Done
+* search action implementation
 * seperate API proj and lib proj
 * unit test- Use Autofixture
 * Add security for API- try using JWT instead of cookie
