@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProfileApi.Services
 {
-    public class ProfileRepository: IRepository<Profile>
+    public class ProfileRepository : IRepository<Profile>
     {
         private readonly IProfileContext _context = null;
 
@@ -28,13 +28,20 @@ namespace ProfileApi.Services
 
         public async Task<Profile> Create(Profile profile)
         {
-            await _context.Profiles.InsertOneAsync(profile);
-            return  profile;
+            try
+            {
+                await _context.Profiles.InsertOneAsync(profile);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            return profile;
         }
 
         public async Task Update(string id, Profile profileIn)
         {
-           await _context.Profiles.ReplaceOneAsync(profile => profile.Id == id, profileIn);
+            await _context.Profiles.ReplaceOneAsync(profile => profile.Id == id, profileIn);
         }
 
         public async Task Remove(Profile profileIn)

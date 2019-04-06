@@ -18,13 +18,20 @@ namespace ProfileApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Profile>>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _profileRepository.Get();
+            var profiles = await _profileRepository.Get();
+
+            if (profiles == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(profiles);
         }
 
         [HttpGet("{id:length(24)}", Name = "GetProfile")]
-        public async Task<ActionResult<Profile>> Get(string id)
+        public async Task<ActionResult> Get(string id)
         {
             var profile = await _profileRepository.Get(id);
 
@@ -33,28 +40,35 @@ namespace ProfileApi.Controllers
                 return NotFound();
             }
 
-            return profile;
+            return Ok(profile);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Profile>> Create(Profile profile)
+        public async Task<ActionResult> Create(Profile profile)
         {
-            await _profileRepository.Create(profile);
+            var returnedProfile = await _profileRepository.Create(profile);
 
-            return CreatedAtRoute("GetProfile", new { id = profile.Id.ToString() }, profile);
+            if (returnedProfile == null)
+            {
+                return Conflict();
+            }
+            else
+            {
+                return CreatedAtRoute("GetProfile", new { id = returnedProfile.Id.ToString() }, returnedProfile);
+            }
         }
 
         [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, Profile profileIn)
+        public async Task<IActionResult> Update(string id, Profile profile)
         {
-            var profile = _profileRepository.Get(id);
+            var profileFromRepo = _profileRepository.Get(id);
 
-            if (profile == null)
+            if (profileFromRepo == null)
             {
                 return NotFound();
             }
 
-            await _profileRepository.Update(id, profileIn);
+            await _profileRepository.Update(id, profile);
 
             return NoContent();
         }
