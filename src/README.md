@@ -1,0 +1,18 @@
+# Things Done
+* inject configrations as options
+* upload to git
+* Move all creation of instances to DI
+* create postman collection
+* Use Repository Pattern
+* Resolve mongodb complex object(Address in Profile) serialization and de-serialization
+* make all async
+* unit test on controller 
+* Create middleware for global exception handling
+
+# Things to be Done
+* seperate API proj and lib proj
+* unit test- Use Autofixture
+* Add security for API- try using JWT instead of cookie
+* Integrate swagger
+* unit test for repository
+* Integrate Logging service
