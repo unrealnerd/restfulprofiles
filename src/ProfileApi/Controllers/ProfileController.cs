@@ -1,10 +1,11 @@
-using System.Collections.Generic;
 using ProfileApi.Models;
 using ProfileApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using ProfileApi.Models.Query;
+using ProfileApi.Services.QueryService;
+using System.Collections.Generic;
 
 namespace ProfileApi.Controllers
 {
@@ -13,19 +14,19 @@ namespace ProfileApi.Controllers
     [ApiController]
     public class ProfilesController : ControllerBase
     {
-        private readonly IRepository<Profile> _profileRepository;
-        private readonly QueryBuilder _queryBuilder;
+        private readonly IRepository<Profile> _Repository;
+        private readonly IQueryBuilder<Profile> _queryBuilder;
 
-        public ProfilesController(IRepository<Profile> profileRepository, QueryBuilder queryBuilder)
+        public ProfilesController(IRepository<Profile> Repository, IQueryBuilder<Profile> queryBuilder)
         {
-            _profileRepository = profileRepository;
+            _Repository = Repository;
             _queryBuilder = queryBuilder;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var profiles = await _profileRepository.Get();
+            var profiles = await _Repository.Get();
 
             if (profiles == null)
             {
@@ -39,7 +40,7 @@ namespace ProfileApi.Controllers
         [HttpGet("{id:length(24)}", Name = "GetProfile")]
         public async Task<ActionResult> Get(string id)
         {
-            var profile = await _profileRepository.Get(id);
+            var profile = await _Repository.Get(id);
 
             if (profile == null)
             {
@@ -51,9 +52,9 @@ namespace ProfileApi.Controllers
 
         [HttpPost(Name = "QueryProfile")]
         [Route("query")]// since we have multiple post actions need to mention route explicitly
-        public async Task<ActionResult> Query(Query query)
+        public async Task<ActionResult> Query(IList<Expression> expressions)
         {
-            var profile = await _profileRepository.Query(_queryBuilder.Build(query));
+            var profile = await _Repository.Query(_queryBuilder.Build(expressions));
 
             if (profile == null)
             {
@@ -66,7 +67,7 @@ namespace ProfileApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Profile profile)
         {
-            var returnedProfile = await _profileRepository.Create(profile);
+            var returnedProfile = await _Repository.Create(profile);
 
             if (returnedProfile == null)
             {
@@ -81,14 +82,14 @@ namespace ProfileApi.Controllers
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, Profile profile)
         {
-            var profileFromRepo = _profileRepository.Get(id);
+            var profileFromRepo = _Repository.Get(id);
 
             if (profileFromRepo == null)
             {
                 return NotFound();
             }
 
-            await _profileRepository.Update(id, profile);
+            await _Repository.Update(id, profile);
 
             return NoContent();
         }
@@ -96,14 +97,14 @@ namespace ProfileApi.Controllers
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var profile = await _profileRepository.Get(id);
+            var profile = await _Repository.Get(id);
 
             if (profile == null)
             {
                 return NotFound();
             }
 
-            await _profileRepository.Remove(profile.Id);
+            await _Repository.Remove(profile.Id);
 
             return NoContent();
         }

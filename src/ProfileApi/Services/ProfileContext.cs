@@ -4,7 +4,7 @@ using ProfileApi.Models;
 
 namespace ProfileApi.Services
 {
-    public class ProfileContext : IProfileContext
+    public class ProfileContext : IDataContext<Profile>
     {
         private readonly IMongoDatabase _database = null;
 
@@ -15,7 +15,7 @@ namespace ProfileApi.Services
                 _database = client.GetDatabase(settings.Value.Database);
         }
 
-        public IMongoCollection<Profile> Profiles => _database.GetCollection<Profile>("profiles");
+        public IMongoCollection<Profile> Collection => _database.GetCollection<Profile>("profiles");
 
     }
 }

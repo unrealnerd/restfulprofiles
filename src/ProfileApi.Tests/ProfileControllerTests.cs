@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using ProfileApi.Models;
 using ProfileApi.Services;
@@ -8,11 +6,14 @@ using Xunit;
 using ProfileApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using ProfileApi.Services.QueryService;
 
 namespace ProfileApi.Tests
 {
     public class ProfileControllerTests
     {
+        private readonly IQueryBuilder<Profile> _queryBuilder = new Mock<IQueryBuilder<Profile>>().Object;
+
         private Profile GetDummyProfile()
         {
             return new Profile
@@ -27,9 +28,9 @@ namespace ProfileApi.Tests
         public async Task GetProfiles_Returns200_IfNoProfileInRepo()//returing 200 ok makes sense since the request worked as expected and the DB did not have any profiles
         {
             // Arrange
-            var mockProfileRepo = new Mock<IRepository<Profile>>();
+            var mockProfileRepo = new Mock<IRepository<Profile>>();            
             mockProfileRepo.Setup(i => i.Get()).ReturnsAsync(new List<Profile>());// repo returing empty list rather than null
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Get();
@@ -47,7 +48,7 @@ namespace ProfileApi.Tests
             // Arrange
             var mockProfileRepo = new Mock<IRepository<Profile>>();
             mockProfileRepo.Setup(i => i.Get()).ReturnsAsync((List<Profile>)null);
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object,_queryBuilder);
 
             // Act
             var response = await controller.Get();
@@ -68,7 +69,7 @@ namespace ProfileApi.Tests
                 GetDummyProfile()
             });
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Get();
@@ -92,7 +93,7 @@ namespace ProfileApi.Tests
             var mockProfileRepo = new Mock<IRepository<Profile>>();
             mockProfileRepo.Setup(i => i.Get(idOfProfileToGet)).ReturnsAsync((Profile)null);
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Get(idOfProfileToGet);
@@ -112,7 +113,7 @@ namespace ProfileApi.Tests
             var mockProfileRepo = new Mock<IRepository<Profile>>();
             mockProfileRepo.Setup(i => i.Get(idOfProfileToGet)).ReturnsAsync(dummyprofile);
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Get(idOfProfileToGet);
@@ -136,7 +137,7 @@ namespace ProfileApi.Tests
 
             mockProfileRepo.Setup(i => i.Create(dummmyProfile)).ReturnsAsync(dummmyProfile);
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Create(dummmyProfile);
@@ -160,7 +161,7 @@ namespace ProfileApi.Tests
 
             mockProfileRepo.Setup(i => i.Create(dummmyProfile)).ReturnsAsync((Profile)null);
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Create(dummmyProfile);
@@ -180,7 +181,7 @@ namespace ProfileApi.Tests
 
             mockProfileRepo.Setup(i => i.Update(dummmyProfile.Id, dummmyProfile)).Returns(Task.CompletedTask);
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Update(dummmyProfile.Id, dummmyProfile);
@@ -201,7 +202,7 @@ namespace ProfileApi.Tests
             mockProfileRepo.Setup(i => i.Get(dummmyProfile.Id)).ReturnsAsync(dummmyProfile);
             mockProfileRepo.Setup(i => i.Remove(dummmyProfile.Id)).Returns(Task.CompletedTask);
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Delete(dummmyProfile.Id);
@@ -222,7 +223,7 @@ namespace ProfileApi.Tests
             mockProfileRepo.Setup(i => i.Get("2")).ReturnsAsync(dummmyProfile);
             mockProfileRepo.Setup(i => i.Remove(dummmyProfile.Id)).Returns(Task.CompletedTask);
 
-            var controller = new ProfilesController(mockProfileRepo.Object);
+            var controller = new ProfilesController(mockProfileRepo.Object, _queryBuilder);
 
             // Act
             var response = await controller.Delete(dummmyProfile.Id);

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace ProfileApi.Models
 {
     [Serializable]
-    public class Profile
+    public class Profile: IIdentifable
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]// this one makes it possible to keep Id property as string

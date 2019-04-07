@@ -3,8 +3,8 @@ using ProfileApi.Models;
 
 namespace ProfileApi.Services
 {
-    public interface IProfileContext
+    public interface IDataContext<T>
     {
-        IMongoCollection<Profile> Profiles { get; }
+        IMongoCollection<T> Collection { get; } 
     }
 }

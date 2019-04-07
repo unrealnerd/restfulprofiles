@@ -17,6 +17,7 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 
 # Things to be Done
 * search action implementation
+* checkout text-indexes in mongodb and case-insensitivity
 * seperate API proj and lib proj
 * unit test- Use Autofixture
 * Integrate swagger 

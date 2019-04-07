@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ProfileApi.Middleware;
 using ProfileApi.Models;
-using ProfileApi.Models.Query;
 using ProfileApi.Services;
+using ProfileApi.Services.QueryService;
 
 namespace ProfileApi
 {
@@ -32,12 +25,12 @@ namespace ProfileApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IProfileContext, ProfileContext>();
-            services.AddTransient<IRepository<Profile>, ProfileRepository>();
+            services.AddScoped<IDataContext<Profile>, ProfileContext>();
+            services.AddTransient<IRepository<Profile>, Repository<Profile>>();
             services.AddScoped<LoginService>();
-            services.AddScoped<QueryBuilder>();
+            services.AddTransient<IQueryBuilder<Profile>, QueryBuilder<Profile>>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
             //Maps settings file to Settings Class at runtime
             services.Configure<Settings>(options =>
             {
@@ -47,10 +40,10 @@ namespace ProfileApi
                 .Value;
                 options.TokenIssuer = Configuration.GetSection("JWT:Issuer").Value;
             });
-            
-            
+
+
             var appSettingsSection = Configuration.GetSection("Api");
-            
+
             var secretToken = Encoding.ASCII.GetBytes(Configuration.GetSection("JWT:SecretToken").Value);
 
             services.AddAuthentication(a =>
