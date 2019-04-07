@@ -23,7 +23,9 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 * Integrate Logging service
 * containerize using docker
 * deploy on heroku or azure
-
+* host sample mongodb in free host
+* seperate data and api docker containers
+* perforamnce factors- use caching
 
 ### Assumptions
 * made use of new id(string- objectID) instead of simple integer column userId with  for mongodb integration

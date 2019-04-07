@@ -64,7 +64,7 @@ namespace ProfileApi
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(secretToken),
                     ValidateIssuer = false,// validate the server that generates the token
-                    ValidateAudience = false//validate the user who generates token is auth0rized
+                    ValidateAudience = false//validate the user who generates token is authorized
                 };
             });
         }
