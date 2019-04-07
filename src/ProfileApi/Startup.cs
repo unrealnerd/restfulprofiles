@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ProfileApi.Middleware;
 using ProfileApi.Models;
+using ProfileApi.Models.Query;
 using ProfileApi.Services;
 
 namespace ProfileApi
@@ -34,6 +35,7 @@ namespace ProfileApi
             services.AddScoped<IProfileContext, ProfileContext>();
             services.AddTransient<IRepository<Profile>, ProfileRepository>();
             services.AddScoped<LoginService>();
+            services.AddScoped<QueryBuilder>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             //Maps settings file to Settings Class at runtime

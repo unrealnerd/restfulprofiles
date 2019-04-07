@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 using ProfileApi.Models;
 
 namespace ProfileApi.Services
@@ -12,5 +13,6 @@ namespace ProfileApi.Services
         Task Update(string id, T inputData);
         Task Remove(T inputData);
         Task Remove(string id);
+        Task<List<T>> Query(FilterDefinition<T> filter);
     }
 }

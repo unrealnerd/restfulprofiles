@@ -4,6 +4,7 @@ using ProfileApi.Models;
 using MongoDB.Driver;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using ProfileApi.Models.Query;
 
 namespace ProfileApi.Services
 {
@@ -52,6 +53,11 @@ namespace ProfileApi.Services
         public async Task Remove(string id)
         {
             await _context.Profiles.DeleteOneAsync(profile => profile.Id == id);
+        }
+
+        public async Task<List<Profile>> Query(FilterDefinition<Profile> filter)
+        {            
+            return await  _context.Profiles.Find(filter).ToListAsync();
         }
     }
 }

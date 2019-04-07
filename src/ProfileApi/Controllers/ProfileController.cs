@@ -4,6 +4,7 @@ using ProfileApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using ProfileApi.Models.Query;
 
 namespace ProfileApi.Controllers
 {
@@ -13,10 +14,12 @@ namespace ProfileApi.Controllers
     public class ProfilesController : ControllerBase
     {
         private readonly IRepository<Profile> _profileRepository;
+        private readonly QueryBuilder _queryBuilder;
 
-        public ProfilesController(IRepository<Profile> profileRepository)
+        public ProfilesController(IRepository<Profile> profileRepository, QueryBuilder queryBuilder)
         {
             _profileRepository = profileRepository;
+            _queryBuilder = queryBuilder;
         }
 
         [HttpGet]
@@ -32,10 +35,25 @@ namespace ProfileApi.Controllers
             return Ok(profiles);
         }
 
+        //since the IDs are managed by mongodb and is of length 24
         [HttpGet("{id:length(24)}", Name = "GetProfile")]
         public async Task<ActionResult> Get(string id)
         {
             var profile = await _profileRepository.Get(id);
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(profile);
+        }
+
+        [HttpPost(Name = "QueryProfile")]
+        [Route("query")]// since we have multiple post actions need to mention route explicitly
+        public async Task<ActionResult> Query(Query query)
+        {
+            var profile = await _profileRepository.Query(_queryBuilder.Build(query));
 
             if (profile == null)
             {

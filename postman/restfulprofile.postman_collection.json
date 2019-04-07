@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Update a Profile",
+			"name": "Query Profiles API",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -17,7 +17,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTQ1ODY2MTMsImlzcyI6ImJpdHNtb25rZXkifQ.5OE-Vs8ZGq1pkp4zY660Z0CdF6KYZlz2VCeTyRGTqds",
+						"value": "Bearer {{APIKey}}",
 						"type": "text"
 					}
 				],
@@ -51,14 +51,13 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"name": "Content-Type",
 						"value": "application/json",
 						"type": "text",
 						"disabled": true
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTQ1ODY2MTMsImlzcyI6ImJpdHNtb25rZXkifQ.5OE-Vs8ZGq1pkp4zY660Z0CdF6KYZlz2VCeTyRGTqds",
+						"value": "Bearer {{APIKey}}",
 						"type": "text"
 					}
 				],
@@ -92,7 +91,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTQ1ODY2MTMsImlzcyI6ImJpdHNtb25rZXkifQ.5OE-Vs8ZGq1pkp4zY660Z0CdF6KYZlz2VCeTyRGTqds",
+						"value": "Bearer {{APIKey}}",
 						"type": "text"
 					}
 				],
@@ -116,7 +115,7 @@
 			"response": []
 		},
 		{
-			"name": "Login",
+			"name": "Login- Get JWT",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -141,6 +140,42 @@
 					"path": [
 						"api",
 						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Profiles",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{APIKey}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"expressions\": [\r\n        {\r\n            \"operand\": \"age\",\r\n            \"operator\": \"eq\",\r\n            \"value\": \"23\"\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Profiles/Query",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Profiles",
+						"Query"
 					]
 				}
 			},
