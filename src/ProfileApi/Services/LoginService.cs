@@ -11,8 +11,9 @@ using ProfileApi.Models;
 
 namespace ProfileApi.Services
 {
-    public class LoginService
+    public class LoginService : ILoginService
     {
+        //TODO: Move this data to DB and store encrypted
         private List<User> _users = new List<User>
         {
             new User {
@@ -39,21 +40,23 @@ namespace ProfileApi.Services
             if (user == null)
                 return null;
 
-            var tokenString = GenerateJSONWebToken(user);  
-            
+            var tokenString = GenerateJSONWebToken(user);
+
             return tokenString;
         }
 
 
         private string GenerateJSONWebToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretToken));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            //secret token and the algorithm to use
+            var secretToken = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretToken));
+            var credentials = new SigningCredentials(secretToken, SecurityAlgorithms.HmacSha256);
 
+            // creating a with one day validity. TODO: Make this cocnfigurable and reduce validity
             var token = new JwtSecurityToken(_settings.TokenIssuer,
             null,
             null,
-            expires: DateTime.Now.AddMinutes(120),
+            expires: DateTime.Now.AddDays(1),
             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
