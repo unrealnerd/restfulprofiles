@@ -27,7 +27,7 @@ namespace ProfileApi.Tests
         }
 
         [Fact]
-        public async Task GetProfiles_Returns200_IfNoProfileInRepo()//returing 200 ok makes sense since the request worked as expected and the DB did not have any profiles
+        public async Task GetProfiles_Returns404_IfNoProfileInRepo()//returing 200 ok makes sense since the request worked as expected and the DB did not have any profiles
         {
             // Arrange
             var mockProfileRepo = new Mock<IRepository<Profile>>();
@@ -40,12 +40,12 @@ namespace ProfileApi.Tests
 
             // Act
             var response = await controller.Get();
-            var okObjectResult = Assert.IsType<OkObjectResult>(response);
+            var notFoundResult = Assert.IsType<NotFoundResult>(response);
 
 
             // Assert
-            Assert.NotNull(okObjectResult);
-            Assert.Equal(200, okObjectResult.StatusCode);
+            Assert.NotNull(notFoundResult);
+            Assert.Equal(404, notFoundResult.StatusCode);
         }
 
         [Fact]
@@ -63,7 +63,6 @@ namespace ProfileApi.Tests
             // Act
             var response = await controller.Get();
             var notFoundResult = Assert.IsType<NotFoundResult>(response);
-
 
             // Assert
             Assert.NotNull(notFoundResult);
@@ -87,7 +86,6 @@ namespace ProfileApi.Tests
 
             // Act
             var response = await controller.Get();
-
 
             // Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(response);

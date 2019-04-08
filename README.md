@@ -1,3 +1,6 @@
+# Usage
+
+
 # Things Done
 * basic CRUD apis
 * configure mongodb
@@ -16,9 +19,11 @@
 for generating token use "api/Login" and generate a Token. Then use this token in the request header
 * case insensitive search using Query
 * rest client tool created
+* search action implementation
 
 # Things to be Done
-* search action implementation
+
+* model validation for querybuilder
 * checkout text-indexes in mongodb 
 * seperate API proj and lib proj
 * unit test- Use Autofixture
@@ -32,6 +37,7 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 * perforamnce factors- use caching
 * search/ query using simpler query input as string or regular expression
 * add patch endpoint
+* use LoggerMessage for performant loggiing instead of logger extension
 
 ### Assumptions
 * made use of new id(string- objectID) instead of simple integer column userId with  for mongodb integration

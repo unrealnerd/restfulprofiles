@@ -11,7 +11,7 @@ namespace ProfileApi.Services.QueryService
     public class QueryBuilder<T> : IQueryBuilder<T>
     {
         private readonly IRepository<T> _Repository;
-        private readonly ILogger _logger;
+        private readonly ILogger<T> _logger;
         public QueryBuilder(IRepository<T> Repository, ILogger<T> logger)
         {
             _Repository = Repository;
@@ -28,22 +28,20 @@ namespace ProfileApi.Services.QueryService
                 for (int i = 0; i < expressions.Count; i++)
                 {
                     var currentExpr = expressions[i];
+                    filter = GetFilter(currentExpr);
+
                     if (i % 2 != 0)
                     {
                         var prevFilter = filters[i - 1];
                         var prevExpr = expressions[i - 1];
                         if (String.Equals(prevExpr.LogicalCondition, "and", StringComparison.OrdinalIgnoreCase))
-                        {
-                            filter = prevFilter & GetFilter(currentExpr);
+                        {                            
+                            filter = prevFilter & filter;
                         }
                         else if (String.Equals(prevExpr.LogicalCondition, "or", StringComparison.OrdinalIgnoreCase))
                         {
                             filter = filter | prevFilter;
                         }
-                    }
-                    else
-                    {
-                        filter = GetFilter(currentExpr);
                     }
                     filters.Add(filter);
                 }

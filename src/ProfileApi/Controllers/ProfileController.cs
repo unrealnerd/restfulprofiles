@@ -42,6 +42,7 @@ namespace ProfileApi.Controllers
                 if (profiles == null)
                 {
                     _logger.LogError(LoggingEvents.ReadItem, "Something must have gone wrong in the profiles repo since its not an empty list");
+                    return NotFound();
                 }
                 else if (profiles.Count == 0)
                 {
