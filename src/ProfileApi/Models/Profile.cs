@@ -6,12 +6,12 @@ using Newtonsoft.Json;
 
 namespace ProfileApi.Models
 {
-    [Serializable]
+    [Serializable]    
     public class Profile: IIdentifable
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]// this one makes it possible to keep Id property as string
-        [JsonIgnore]// that  even if pass the id in post request it is ignored. as Id should be managed by DB
+        [BsonIgnoreIfDefault]
         public string Id { get; set; }
 
         [BsonElement("userId")]

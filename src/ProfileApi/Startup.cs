@@ -27,8 +27,8 @@ namespace ProfileApi
         {
             services.AddScoped<IDataContext<Profile>, ProfileContext>();
             services.AddScoped<IRepository<Profile>, Repository<Profile>>();
-            services.AddTransient<ILoginService, ILoginService>();
-            services.AddSingleton<IQueryBuilder<Profile>, QueryBuilder<Profile>>();
+            services.AddTransient<ILoginService, LoginService>();
+            services.AddScoped<IQueryBuilder<Profile>, QueryBuilder<Profile>>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Maps settings file to Settings Class at runtime

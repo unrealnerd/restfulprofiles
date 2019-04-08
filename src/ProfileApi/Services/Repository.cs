@@ -19,45 +19,50 @@ namespace ProfileApi.Services
 
         public async Task<List<T>> Get()
         {
-            return await _context.Collection.Find<T>(profile => true).ToListAsync<T>();
+            return await _context.Collection.Find<T>(input => true).ToListAsync<T>();
         }
 
         public async Task<T> Get(string id)
         {
-            return await _context.Collection.Find<T>(profile => profile.Id == id).FirstOrDefaultAsync();
+            return await _context.Collection.Find<T>(input => input.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<T> Create(T profile)
+        public async Task<T> Create(T input)
         {
             try
             {
-                await _context.Collection.InsertOneAsync(profile);
+                await _context.Collection.InsertOneAsync(input);
             }
             catch (System.Exception)
             {
                 throw;
             }
-            return profile;
+            return input;
         }
 
-        public async Task Update(string id, T profileIn)
-        {
-            await _context.Collection.ReplaceOneAsync<T>(profile => profile.Id == id, profileIn);
+        public async Task Update(string id, T input)
+        {            
+            await _context.Collection.ReplaceOneAsync<T>(i => i.Id == id, input);
         }
 
-        public async Task Remove(T profileIn)
+        public async Task Remove(T input)
         {
-            await _context.Collection.DeleteOneAsync(profile => profile.Id == profileIn.Id);
+            await _context.Collection.DeleteOneAsync(i => i.Id == input.Id);
         }
 
         public async Task Remove(string id)
         {
-            await _context.Collection.DeleteOneAsync(profile => profile.Id == id);
+            await _context.Collection.DeleteOneAsync(i => i.Id == id);
         }
 
         public async Task<List<T>> Query(FilterDefinition<T> filter)
-        {            
-            return await  _context.Collection.Find(filter).ToListAsync();
+        {
+            var findOptions = new FindOptions
+            {
+                Collation = new Collation("en", strength: CollationStrength.Primary)
+            };
+
+            return await _context.Collection.Find(filter, findOptions).ToListAsync();
         }
     }
 }

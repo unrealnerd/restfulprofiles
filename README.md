@@ -14,10 +14,11 @@
 * Create middleware for global exception handling
 * Add security for API- try using JWT instead of cookie
 for generating token use "api/Login" and generate a Token. Then use this token in the request header
+* case insensitive search using Query
 
 # Things to be Done
 * search action implementation
-* checkout text-indexes in mongodb and case-insensitivity
+* checkout text-indexes in mongodb 
 * seperate API proj and lib proj
 * unit test- Use Autofixture
 * Integrate swagger 
@@ -28,6 +29,9 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 * host sample mongodb in free host
 * seperate data and api docker containers
 * perforamnce factors- use caching
+* search/ query using simpler query input as string or regular expression
+* add patch endpoint
 
 ### Assumptions
 * made use of new id(string- objectID) instead of simple integer column userId with  for mongodb integration
+* only supporting english Language
