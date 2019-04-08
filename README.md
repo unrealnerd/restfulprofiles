@@ -15,6 +15,7 @@
 * Add security for API- try using JWT instead of cookie
 for generating token use "api/Login" and generate a Token. Then use this token in the request header
 * case insensitive search using Query
+* rest client tool created
 
 # Things to be Done
 * search action implementation

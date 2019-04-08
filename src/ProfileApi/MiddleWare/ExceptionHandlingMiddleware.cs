@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using ProfileApi.Models;
+using ProfileApi.Services.LoggerService;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -32,15 +33,11 @@ namespace ProfileApi.Middleware
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var response = context.Response;            
+            var response = context.Response;
 
             response.ContentType = "application/json";
             response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await response.WriteAsync(JsonConvert.SerializeObject(new CustomErrorResponse
-            {                
-                Message = exception.Message,
-                StackTrace = exception.StackTrace
-            }));
+            await response.WriteAsync(exception.ToErrorResponse(LoggingEvents.UnkownError));
         }
     }
 
