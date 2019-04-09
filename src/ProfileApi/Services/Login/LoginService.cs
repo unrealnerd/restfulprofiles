@@ -56,7 +56,7 @@ namespace ProfileApi.Services
             var token = new JwtSecurityToken(_settings.TokenIssuer,
             null,
             null,
-            expires: DateTime.Now.AddDays(1),
+            expires: DateTime.Now.AddHours(1),
             signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

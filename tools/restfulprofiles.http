@@ -1,5 +1,5 @@
 @url = https://localhost:5001/api
-@APIKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTQ3OTU4NTAsImlzcyI6ImJpdHNtb25rZXkifQ.sfPnSqWrokyj9at3Rc2lHYlsTTI5WG79LFCR2I0CfOM
+@APIKey = {{getJWT.response.body.$.accessToken}}
 
 ### --- Gets JWT Token --- ###
 # @name getJWT
@@ -18,7 +18,7 @@ Content-Type:application/json
 
 ### --- Gets all Profiles --- ###
 # @name getAllProfile
-GET {{url}} HTTP/1.1
+GET {{url}}/profiles HTTP/1.1
 Authorization:Bearer {{APIKey}}
 
 ### --- Gets a Profile --- ###

@@ -28,7 +28,7 @@ namespace ProfileApi.Controllers
             if (authUserToken == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(authUserToken);
+            return Ok(new { AccessToken = authUserToken });
         }
     }
 }
