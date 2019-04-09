@@ -1,5 +1,25 @@
 # Usage
+Clone the source code from [Github](https://github.com/unrealnerd/restfulprofiles)
 
+`git clone https://github.com/unrealnerd/restfulprofiles.git`
+
+Copy the zipped data folder to `<clonedpath>\restfulprofiles\data`
+
+Start the mongo shell using the below command
+
+`c:\mongodb\mongod.exe --dbapth "<clonedpath>\restfulprofiles\data"`
+
+Now open the `restfulprofiles\` directory with vscode
+
+run `dotnet restore`
+
+press `f5` and run the project
+
+If Using [VSCode Rest Client](https://marketplace.visualstudio.com/itemdetails?itemName=humao.rest-client), just run the requests in order.
+
+If Using postman collection from tools folder get the JWT token and set the environment variable `APIKey` with the reponse token. Or chnage the Authorization header in each request.
+
+# NOTES
 
 # Things Done
 * basic CRUD apis
@@ -38,6 +58,7 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 * search/ query using simpler query input as string or regular expression
 * add patch endpoint
 * use LoggerMessage for performant loggiing instead of logger extension
+* create set up scripts
 
 ### Assumptions
 * made use of new id(string- objectID) instead of simple integer column userId with  for mongodb integration
