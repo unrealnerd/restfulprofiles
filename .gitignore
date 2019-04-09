@@ -128,7 +128,6 @@ src/.vs/config/applicationhost.config
 !GitLink.exe
 !nuget.exe
 !SQLite.Interop.dll
-/tools
 
 # contents of data
 data/

@@ -1,0 +1,103 @@
+@url = https://localhost:5001/api
+@APIKey = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTQ3OTU4NTAsImlzcyI6ImJpdHNtb25rZXkifQ.sfPnSqWrokyj9at3Rc2lHYlsTTI5WG79LFCR2I0CfOM
+
+### --- Gets JWT Token --- ###
+# @name getJWT
+POST {{url}}/login HTTP/1.1
+Content-Type:application/json
+
+{
+    "username": "arjun",
+    "password": "password"
+}
+
+
+@lastGetProfileId ={{getProfile.response.body.$[0].id}}
+@firstProfileId ={{getAllProfile.response.body.$[0].id}}
+@secondProfileId ={{getAllProfile.response.body.$[1].id}}
+
+### --- Gets all Profiles --- ###
+# @name getAllProfile
+GET {{url}} HTTP/1.1
+Authorization:Bearer {{APIKey}}
+
+### --- Gets a Profile --- ###
+# @name getProfile
+GET {{url}}/{{firstProfileId}} HTTP/1.1
+Authorization:Bearer {{APIKey}}
+
+### --- Create a Profile --- ###
+# @createProfile
+POST {{url}}/create HTTP/1.1
+Authorization:Bearer {{APIKey}}
+Content-Type:application/json
+
+{       
+    "userId": 39,
+    "age": 35,
+    "email": "sienfeld@comedy.com",
+    "phoneNumber": "111-111-1111",
+    "home": {
+        "homeType": "rent",
+        "address": "2 street, NY",
+        "state": "NY",
+        "zipCode": "10001"
+    },
+    "kids": [
+        {
+            "firstName": "Cosmo",
+            "lastName": "Kramer",
+            "age": 10
+        },
+        {
+            "firstName": "George",
+            "lastName": "Costanza",
+            "age": 10
+        }
+    ]
+}
+
+### --- Update a Profile --- ###
+# @updateProfile
+PUT {{url}}/update/{{secondProfileId}} HTTP/1.1
+Authorization:Bearer {{APIKey}}
+Content-Type:application/json
+
+{       
+    "userId": 1,
+    "age": 20,
+    "email": "bitsmonkey@net.com",
+    "phoneNumber": "111-111-1111",
+    "home": {
+        "homeType": "rent",
+        "address": "2 street, NY",
+        "state": "TX",
+        "zipCode": "10002"
+    }
+}
+
+### --- Deletes a Profile --- ###
+# @name deleteProfile
+DELETE {{url}}/{{firstProfileId}} HTTP/1.1
+Authorization:Bearer {{APIKey}}
+
+
+### --- Search profiles repo --- ###
+# @name searchProfile
+GET {{url}}/search HTTP/1.1
+Authorization:Bearer {{APIKey}}
+Content-Type:application/json
+
+[
+    {
+        "operand": "age",
+        "operator": ">",
+        "value": 20,
+        "logicalcondition":"and"
+    },
+    {
+        "operand": "home.state",
+        "operator": "=",
+        "value": "ny"
+    }
+]
