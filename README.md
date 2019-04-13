@@ -19,6 +19,14 @@ If Using [VSCode Rest Client](https://marketplace.visualstudio.com/itemdetails?i
 
 If Using postman collection from tools folder get the JWT token and set the environment variable `APIKey` with the reponse token. Or chnage the Authorization header in each request.
 
+# Using container
+After cloning and copying the data to data folder
+
+Open powershell in run `docker-compose up --build`
+
+Now use the tools/*.http file to create an apikey and then use the Profiles/Api
+
+
 # NOTES
 
 # Things Done
@@ -40,6 +48,7 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 * case insensitive search using Query
 * rest client tool created
 * search action implementation
+* containerize using docker
 
 # Things to be Done
 
@@ -50,7 +59,6 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 * Integrate swagger 
 * unit test for repository
 * Integrate Logging service
-* containerize using docker
 * deploy on heroku or azure
 * host sample mongodb in free host
 * seperate data and api docker containers
@@ -59,6 +67,9 @@ for generating token use "api/Login" and generate a Token. Then use this token i
 * add patch endpoint
 * use LoggerMessage for performant loggiing instead of logger extension
 * create set up scripts
+* use .netcore secrets to store apikeys
+* set username and passwod for mongodb
+* swarm of containers and handling db in that scenario
 
 ### Assumptions
 * made use of new id(string- objectID) instead of simple integer column userId with  for mongodb integration
