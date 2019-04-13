@@ -23,12 +23,12 @@ Authorization:Bearer {{APIKey}}
 
 ### --- Gets a Profile --- ###
 # @name getProfile
-GET {{url}}/{{firstProfileId}} HTTP/1.1
+GET {{url}}/profiles/{{firstProfileId}} HTTP/1.1
 Authorization:Bearer {{APIKey}}
 
 ### --- Create a Profile --- ###
 # @createProfile
-POST {{url}}/create HTTP/1.1
+POST {{url}}/profiles/create HTTP/1.1
 Authorization:Bearer {{APIKey}}
 Content-Type:application/json
 
@@ -41,7 +41,7 @@ Content-Type:application/json
         "homeType": "rent",
         "address": "2 street, NY",
         "state": "NY",
-        "zipCode": "10001"
+        "zipcode": "10001"
     },
     "kids": [
         {
@@ -59,7 +59,7 @@ Content-Type:application/json
 
 ### --- Update a Profile --- ###
 # @updateProfile
-PUT {{url}}/update/{{secondProfileId}} HTTP/1.1
+PUT {{url}}/profiles/update/{{secondProfileId}} HTTP/1.1
 Authorization:Bearer {{APIKey}}
 Content-Type:application/json
 
@@ -78,13 +78,13 @@ Content-Type:application/json
 
 ### --- Deletes a Profile --- ###
 # @name deleteProfile
-DELETE {{url}}/{{firstProfileId}} HTTP/1.1
+DELETE {{url}}/profiles/{{firstProfileId}} HTTP/1.1
 Authorization:Bearer {{APIKey}}
 
 
 ### --- Search profiles repo --- ###
 # @name searchProfile
-GET {{url}}/search HTTP/1.1
+GET {{url}}/profiles/search HTTP/1.1
 Authorization:Bearer {{APIKey}}
 Content-Type:application/json
 
