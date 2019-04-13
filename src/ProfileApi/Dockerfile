@@ -3,9 +3,8 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
-WORKDIR /src
+WORKDIR /apisrc
 COPY . .
-WORKDIR /src/ProfileApi
 RUN dotnet restore
 
 FROM build AS publish
