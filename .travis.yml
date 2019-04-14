@@ -1,0 +1,9 @@
+language: csharp
+mono: none
+dotnet: 2.2.0
+dist: trusty
+install:
+- dotnet restore ./src/RestfulProfiles.sln
+script:
+- dotnet build ./src/RestfulProfiles.sln
+- dotnet test ./src/ProfileApi.Tests.csproj
