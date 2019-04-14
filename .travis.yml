@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dotnet: 2.2.0
+dotnet: 2.2.105
 dist: xenial
 install:
 - dotnet restore ./src/RestfulProfiles.sln
