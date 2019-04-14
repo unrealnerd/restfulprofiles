@@ -30,12 +30,14 @@ namespace ProfileApi.Services.QueryService
                     var currentExpr = expressions[i];
                     filter = GetFilter(currentExpr);
 
+                    if(filter == null) return null;
+
                     if (i % 2 != 0)
                     {
                         var prevFilter = filters[i - 1];
                         var prevExpr = expressions[i - 1];
                         if (String.Equals(prevExpr.LogicalCondition, "and", StringComparison.OrdinalIgnoreCase))
-                        {                            
+                        {
                             filter = prevFilter & filter;
                         }
                         else if (String.Equals(prevExpr.LogicalCondition, "or", StringComparison.OrdinalIgnoreCase))
