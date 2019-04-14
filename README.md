@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/unrealnerd/restfulprofiles.svg?branch=master)](https://travis-ci.org/unrealnerd/restfulprofiles)
+
 # Usage
 Clone the source code from [Github](https://github.com/unrealnerd/restfulprofiles)
 
