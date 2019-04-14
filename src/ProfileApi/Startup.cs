@@ -31,6 +31,23 @@ namespace ProfileApi
             services.AddScoped<IQueryBuilder<Profile>, QueryBuilder<Profile>>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            // Register the Swagger services
+            services.AddSwaggerDocument(
+                config => config.PostProcess = doc =>
+                {
+                    doc.Info.Version = "1.0";
+                    doc.Info.Title = "Profiles API";
+                    doc.Info.Description = "A Sample API Application for Profiles Repository";
+                    doc.Info.Contact = new NSwag.SwaggerContact
+                    {
+                        Name = "BitsMonkey",
+                        Email = "arjunshetty2020@gmail.com",
+                        Url = "bitsmonkey.blogspot.com"
+                    };
+
+                }
+            );
+
             //Maps settings file to Settings Class at runtime
             services.Configure<Settings>(options =>
             {
@@ -78,6 +95,8 @@ namespace ProfileApi
             }
 
             app.UseMiddleware(typeof(CustomExceptionMiddleware));
+            app.UseSwagger();
+            app.UseSwaggerUi3();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
