@@ -6,4 +6,4 @@ install:
 - dotnet restore ./src/RestfulProfiles.sln
 script:
 - dotnet build ./src/RestfulProfiles.sln
-- dotnet test ./src/ProfileApi.Tests.csproj
+- dotnet test ./src/ProfileApi.Tests/ProfileApi.Tests.csproj
