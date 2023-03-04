@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="mongodb.driver" Version="2.8.0" />
+    <PackageReference Include="mongodb.driver" Version="2.19.0" />
     <PackageReference Include="NSwag.AspNetCore" Version="12.1.0" />
   </ItemGroup>
 
